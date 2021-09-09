@@ -51,10 +51,10 @@ class HiNet {
     }
   }
 
-  Future<dynamic> send<T>(BaseReqeust reqeust) async {
+  Future<dynamic> send<T>(BaseReqeust request) async {
     ///使用 Dio 发送请求
     HiNetAdapter adapter = DioAdapter();
-    return adapter.send(reqeust);
+    return adapter.send(request);
   }
 
   void printLog(log) {

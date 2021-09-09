@@ -6,18 +6,18 @@ import 'package:dio/dio.dart';
 ///Dio适配器
 class DioAdapter extends HiNetAdapter {
   @override
-  Future<HiNetResponse<T>> send<T>(BaseReqeust reqeust) async {
-    var response, options = Options(headers: reqeust.header);
+  Future<HiNetResponse<T>> send<T>(BaseReqeust request) async {
+    var response, options = Options(headers: request.header);
     var error;
     try {
-      if (reqeust.httpMethod() == HttpMethod.GET) {
-        response = await Dio().get(reqeust.url(), options: options);
-      } else if (reqeust.httpMethod() == HttpMethod.POST) {
+      if (request.httpMethod() == HttpMethod.GET) {
+        response = await Dio().get(request.url(), options: options);
+      } else if (request.httpMethod() == HttpMethod.POST) {
         response = await Dio()
-            .post(reqeust.url(), data: reqeust.params, options: options);
-      } else if (reqeust.httpMethod() == HttpMethod.DELETE) {
+            .post(request.url(), data: request.params, options: options);
+      } else if (request.httpMethod() == HttpMethod.DELETE) {
         response = await Dio()
-            .delete(reqeust.url(), data: reqeust.params, options: options);
+            .delete(request.url(), data: request.params, options: options);
       }
     } on DioError catch (e) {
       error = e;
@@ -26,17 +26,17 @@ class DioAdapter extends HiNetAdapter {
     if (error != null) {
       ///抛出HiNetError
       throw HiNetError(response?.statusCode ?? -1, error.toString(),
-          data: buildRes(response, reqeust));
+          data: buildRes(response, request));
     }
-    return buildRes(response, reqeust);
+    return buildRes(response, request);
   }
 
   ///构建HiNetResponse
   Future<HiNetResponse<T>> buildRes<T>(
-      Response? response, BaseReqeust reqeust) {
+      Response? response, BaseReqeust request) {
     return Future.value(HiNetResponse(
         data: response?.data,
-        reqeust: reqeust,
+        request: request,
         statusCode: response?.statusCode,
         statusMessage: response?.statusMessage,
         extra: response));
