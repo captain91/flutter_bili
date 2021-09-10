@@ -1,10 +1,10 @@
 import 'package:bili_app/http/core/hi_net_adapter.dart';
-import 'package:bili_app/http/request/base_reqeust.dart';
+import 'package:bili_app/http/request/base_request.dart';
 
 ///测试适配器，mock 数据
 class MockAdapter extends HiNetAdapter {
   @override
-  Future<HiNetResponse<T>> send<T>(BaseReqeust request) {
+  Future<HiNetResponse<T>> send<T>(BaseRequest request) {
     return Future.delayed(Duration(microseconds: 1000), () {
       return HiNetResponse(
           request: request,

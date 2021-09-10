@@ -2,6 +2,12 @@
 
 哔站实战
 
+Flutter 2.5.0 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision 4cc385b4b8 (27 小时前) • 2021-09-07 23:01:49 -0700
+Engine • revision f0826da7ef
+Tools • Dart 2.14.0
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

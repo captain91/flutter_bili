@@ -1,7 +1,7 @@
 enum HttpMethod { GET, POST, DELETE }
 
 /// 基础请求
-abstract class BaseReqeust {
+abstract class BaseRequest {
   //查询参数 https://api.xxxx/test?requstPrams=11
   //path 请求 https://api.xxxxx/test/11
   var pathParams;
@@ -38,15 +38,19 @@ abstract class BaseReqeust {
   Map<String, String> params = Map();
 
   ///添加参数
-  BaseReqeust add(String k, Object v) {
+  BaseRequest add(String k, Object v) {
     params[k] = v.toString();
     return this;
   }
 
-  Map<String, dynamic> header = Map();
+  Map<String, dynamic> header = {
+    'course-flag': 'fa',
+    //访问令牌，在课程公告获取
+    "auth-token": "ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa",
+  };
 
   ///添加header
-  BaseReqeust addHeader(String k, Object v) {
+  BaseRequest addHeader(String k, Object v) {
     params[k] = v.toString();
     return this;
   }

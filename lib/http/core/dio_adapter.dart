@@ -1,12 +1,12 @@
 import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/http/core/hi_net_adapter.dart';
-import 'package:bili_app/http/request/base_reqeust.dart';
+import 'package:bili_app/http/request/base_request.dart';
 import 'package:dio/dio.dart';
 
 ///Dio适配器
 class DioAdapter extends HiNetAdapter {
   @override
-  Future<HiNetResponse<T>> send<T>(BaseReqeust request) async {
+  Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
     var response, options = Options(headers: request.header);
     var error;
     try {
@@ -26,15 +26,16 @@ class DioAdapter extends HiNetAdapter {
     if (error != null) {
       ///抛出HiNetError
       throw HiNetError(response?.statusCode ?? -1, error.toString(),
-          data: buildRes(response, request));
+          data: await buildRes(response, request));
     }
     return buildRes(response, request);
   }
 
   ///构建HiNetResponse
   Future<HiNetResponse<T>> buildRes<T>(
-      Response? response, BaseReqeust request) {
+      Response? response, BaseRequest request) {
     return Future.value(HiNetResponse(
+        //?.防止response为空
         data: response?.data,
         request: request,
         statusCode: response?.statusCode,

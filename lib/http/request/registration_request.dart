@@ -1,6 +1,6 @@
 import 'package:bili_app/http/request/base_request.dart';
 
-class TestRequest extends BaseRequest {
+class RegistrationRequest extends BaseRequest {
   @override
   HttpMethod httpMethod() {
     return HttpMethod.POST;
@@ -13,6 +13,6 @@ class TestRequest extends BaseRequest {
 
   @override
   String path() {
-    return 'uapi/test/test';
+    return 'uapi/user/registration';
   }
 }

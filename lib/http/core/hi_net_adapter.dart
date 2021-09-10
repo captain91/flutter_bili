@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:bili_app/http/request/base_reqeust.dart';
+import 'package:bili_app/http/request/base_request.dart';
 
 ///网络请求抽象类
 abstract class HiNetAdapter {
-  Future<HiNetResponse<T>> send<T>(BaseReqeust request);
+  Future<HiNetResponse<T>> send<T>(BaseRequest request);
 }
 
 ///统一网络层返回格式
@@ -20,7 +20,7 @@ class HiNetResponse<T> {
   T? data;
 
   /// The corresponding request info.
-  BaseReqeust request;
+  BaseRequest request;
 
   /// Http status code.
   int? statusCode;

@@ -1,8 +1,13 @@
 import 'dart:convert';
 
 import 'package:bili_app/db/hi_cache.dart';
+import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/model/owner.dart';
 import 'package:flutter/material.dart';
+
+import 'http/core/hi_net.dart';
+import 'http/dao/login_dao.dart';
+import 'http/request/test_request.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,33 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _incrementCounter() async {
-    // TestRequest request = TestRequest();
-    // request.add("add", "dddd").add("bb", "bbbb").add("requestPrams", "kkkk");
-    // try {
-    //   var result = await HiNet.getInstance().fire(request);
-    //   print(result);
-    // } on NeedAuth catch (e) {
-    //   print(e);
-    // } on NeedLogin catch (e) {
-    //   print(e);
-    // } on HiNetError catch (e) {
-    //   print(e);
-    // }
+    // test0();
     // test();
     // test1();
-    test2();
-  }
-
-  void test() {
-    const jsonString =
-        "{ \"name\": \"flutter\", \"url\": \"https://coding.imooc.com/class/487.html\" }";
-    //json 转 map
-    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-    print('name' + jsonMap['name']);
-
-    //map 转 json
-    String json = jsonEncode(jsonMap);
-    print('json:$json');
+    // test2();
+    testLogin();
   }
 
   @override
@@ -139,6 +122,34 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void test0() async {
+    // LoginRequest request = LoginRequest();
+    TestRequest request = TestRequest();
+    request.add("add", "dddd").add("bb", "bbbb").add("requestPrams", "kkkk");
+    try {
+      var result = await HiNet.getInstance().fire(request);
+      print(result);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on NeedLogin catch (e) {
+      print(e);
+    } on HiNetError catch (e) {
+      print(e);
+    }
+  }
+
+  void test() {
+    const jsonString =
+        "{ \"name\": \"flutter\", \"url\": \"https://coding.imooc.com/class/487.html\" }";
+    //json 转 map
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    print('name' + jsonMap['name']);
+
+    //map 转 json
+    String json = jsonEncode(jsonMap);
+    print('json:$json');
+  }
+
   void test1() {
     var ownerMap = {
       "name": "伊零Onezero",
@@ -154,5 +165,18 @@ class _MyHomePageState extends State<MyHomePage> {
     HiCache.getInstance().setString("aa", "12222");
     var value = HiCache.getInstance().get("aa");
     print("value:$value");
+  }
+
+  void testLogin() async {
+    try {
+      // var result =
+      //     await LoginDao.registration('disk', "abc", "101191818", "2219");
+      var result = await LoginDao.login('13067917230', 'sunshibo1991');
+      print(result);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on HiNetError catch (e) {
+      print(e);
+    }
   }
 }
