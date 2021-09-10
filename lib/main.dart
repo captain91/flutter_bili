@@ -4,6 +4,8 @@ import 'package:bili_app/db/hi_cache.dart';
 import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/http/request/notice_request.dart';
 import 'package:bili_app/model/owner.dart';
+import 'package:bili_app/page/registration_page.dart';
+import 'package:bili_app/util/color.dart';
 import 'package:flutter/material.dart';
 
 import 'http/core/hi_net.dart';
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    HiCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -30,9 +33,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: white,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: RegistrationPage(),
+      // home: LoginPage(),
     );
   }
 }
