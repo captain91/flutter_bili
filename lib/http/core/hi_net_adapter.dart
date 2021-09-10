@@ -7,14 +7,15 @@ abstract class HiNetAdapter {
   Future<HiNetResponse<T>> send<T>(BaseRequest request);
 }
 
-///统一网络层返回格式
+/// 统一网络层返回格式
 class HiNetResponse<T> {
-  HiNetResponse(
-      {this.data,
-      required this.request,
-      this.statusCode,
-      this.statusMessage,
-      this.extra});
+  HiNetResponse({
+    this.data,
+    required this.request,
+    this.statusCode,
+    this.statusMessage,
+    this.extra,
+  });
 
   /// Response body. may have been transformed, please refer to [ResponseType].
   T? data;
@@ -31,8 +32,9 @@ class HiNetResponse<T> {
   String? statusMessage;
 
   /// Custom field that you can retrieve it later in `then`.
-  dynamic extra;
+  late dynamic extra;
 
+  /// We are more concerned about `data` field.
   @override
   String toString() {
     if (data is Map) {

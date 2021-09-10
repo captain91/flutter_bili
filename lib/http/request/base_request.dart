@@ -1,3 +1,5 @@
+import 'package:bili_app/http/dao/login_dao.dart';
+
 enum HttpMethod { GET, POST, DELETE }
 
 /// 基础请求
@@ -29,6 +31,10 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
+    if (needLogin()) {
+      //需要登录的接口携带登录令牌
+      addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
+    }
     print('url:${uri.toString()}');
     return uri.toString();
   }
@@ -51,7 +57,7 @@ abstract class BaseRequest {
 
   ///添加header
   BaseRequest addHeader(String k, Object v) {
-    params[k] = v.toString();
+    header[k] = v.toString();
     return this;
   }
 }

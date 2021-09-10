@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bili_app/db/hi_cache.dart';
 import 'package:bili_app/http/core/hi_error.dart';
+import 'package:bili_app/http/request/notice_request.dart';
 import 'package:bili_app/model/owner.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // test();
     // test1();
     // test2();
-    testLogin();
+    // testLogin();
+    testNotice();
   }
 
   @override
@@ -85,23 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
@@ -171,12 +157,25 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       // var result =
       //     await LoginDao.registration('disk', "abc", "101191818", "2219");
-      var result = await LoginDao.login('13067917230', 'sunshibo1991');
+      var result = await LoginDao.login('boshi', '123');
       print(result);
     } on NeedAuth catch (e) {
       print(e);
     } on HiNetError catch (e) {
       print(e);
+    }
+  }
+
+  void testNotice() async {
+    try {
+      var notice = await HiNet.getInstance().fire(NoticeRequest());
+      print(notice);
+    } on NeedLogin catch (e) {
+      print(e);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on HiNetError catch (e) {
+      print(e.message);
     }
   }
 }

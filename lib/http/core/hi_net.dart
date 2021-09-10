@@ -29,7 +29,7 @@ class HiNet {
       response = e.data;
       printLog(e.message);
     } catch (e) {
-      //其他异常
+      //其它异常
       error = e;
       printLog(e);
     }
@@ -51,13 +51,13 @@ class HiNet {
     }
   }
 
-  Future<HiNetResponse> send<T>(BaseRequest request) async {
+  Future<HiNetResponse<T>> send<T>(BaseRequest request) async {
     ///使用Dio发送请求
     HiNetAdapter adapter = DioAdapter();
     return adapter.send(request);
   }
 
   void printLog(log) {
-    print('hi_net' + log.toString());
+    print('hi_net:' + log.toString());
   }
 }
