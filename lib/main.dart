@@ -1,7 +1,7 @@
 import 'package:bili_app/db/hi_cache.dart';
 import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/model/video_model.dart';
-import 'package:bili_app/page/home_page.dart';
+import 'package:bili_app/navigator/bottom_navigator.dart';
 import 'package:bili_app/page/login_page.dart';
 import 'package:bili_app/page/registration_page.dart';
 import 'package:bili_app/page/video_detail_page.dart';
@@ -49,7 +49,17 @@ class BiliRouteDelegate extends RouterDelegate<BiliRouthPath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRouthPath> {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    //实现路由跳转逻辑
+    HiNavigator.getInstance().registerRouteJump(
+        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
+      _routeStatus = routeStatus;
+      if (routeStatus == RouteStatus.detail) {
+        this.videoModel = args!['videoMo'];
+      }
+      notifyListeners();
+    }));
+  }
   RouteStatus _routeStatus = RouteStatus.home;
   List<MaterialPage> pages = [];
   VideoModel? videoModel;
@@ -66,32 +76,17 @@ class BiliRouteDelegate extends RouterDelegate<BiliRouthPath>
     var page;
     if (routeStatus == RouteStatus.home) {
       pages.clear();
-      page = pageWrap(HomePage(
-        onJumpToDetail: (videoModel) {
-          this.videoModel = videoModel;
-          notifyListeners();
-        },
-      ));
+      page = pageWrap(BottomNavigator());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel!));
     } else if (routeStatus == RouteStatus.registration) {
-      page = pageWrap(RegistrationPage(onJumpToLogin: () {
-        _routeStatus = RouteStatus.login;
-        notifyListeners();
-      }));
+      page = pageWrap(RegistrationPage());
     } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage(
-        onJumpRegistration: () {
-          _routeStatus = RouteStatus.registration;
-          notifyListeners();
-        },
-        onSuccess: () {
-          _routeStatus = RouteStatus.home;
-          notifyListeners();
-        },
-      ));
+      page = pageWrap(LoginPage());
     }
     tempPages = [...tempPages, page];
+    //通知路由发生变化
+    HiNavigator.getInstance().notify(tempPages, pages);
     pages = tempPages;
 
     return WillPopScope(
@@ -101,18 +96,23 @@ class BiliRouteDelegate extends RouterDelegate<BiliRouthPath>
         onPopPage: (route, result) {
           if ((route.settings as MaterialPage).child is LoginPage) {
             if (!hasLogin) {
-              showToast('请先登录');
+              showWarnToast('请先登录');
               return false;
             }
           }
+          //执行返回操作
           if (!route.didPop(result)) {
             return false;
           }
+          var tempPages = [...pages];
           pages.removeLast();
+          //通知路由发生变化
+          HiNavigator.getInstance().notify(pages, tempPages);
           return true;
         },
       ),
-      onWillPop: () async => !await navigatorKey.currentState!.maybePop(),
+      onWillPop: () async =>
+          !(await navigatorKey.currentState?.maybePop() ?? false),
     );
   }
 
