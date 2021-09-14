@@ -15,7 +15,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        child: Text('视频详情页，vide:${widget.videoModel.vid}'),
+        child: Text('视频详情页，video:${widget.videoModel.vid}'),
       ),
     );
   }

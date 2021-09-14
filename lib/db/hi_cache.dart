@@ -48,8 +48,8 @@ class HiCache {
     prefs?.setInt(key, value);
   }
 
-  setBool(String kye, bool value) {
-    prefs?.setBool(kye, value);
+  setBool(String key, bool value) {
+    prefs?.setBool(key, value);
   }
 
   setStringList(String key, List<String> value) {
