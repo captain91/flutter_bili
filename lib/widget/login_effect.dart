@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+///登录动效，自定义widget
 class LoginEffect extends StatefulWidget {
   final bool protect;
+
   const LoginEffect({Key? key, required this.protect}) : super(key: key);
 
   @override
@@ -34,9 +36,6 @@ class _LoginEffectState extends State<LoginEffect> {
     var headRight = widget.protect
         ? 'images/head_right_protect.png'
         : 'images/head_right.png';
-    return Image(
-      height: 90,
-      image: AssetImage(left ? headLeft : headRight),
-    );
+    return Image(height: 90, image: AssetImage(left ? headLeft : headRight));
   }
 }

@@ -6,6 +6,7 @@ import 'package:bili_app/page/ranking_page.dart';
 import 'package:bili_app/util/color.dart';
 import 'package:flutter/material.dart';
 
+///底部导航
 class BottomNavigator extends StatefulWidget {
   @override
   _BottomNavigatorState createState() => _BottomNavigatorState();
@@ -23,9 +24,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   @override
   Widget build(BuildContext context) {
     _pages = [
-      HomePage(
-        onJumpTo: (index) => _onJumpTo(index, pageChange: false),
-      ),
+      HomePage(onJumpTo: (index) => _onJumpTo(index, pageChange: false)),
       RankingPage(),
       FavoritePage(),
       ProfilePage()
@@ -66,7 +65,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         label: title);
   }
 
-  _onJumpTo(int index, {pageChange = false}) {
+  void _onJumpTo(int index, {pageChange = false}) {
     if (!pageChange) {
       //让PageView展示对应tab
       _controller.jumpToPage(index);

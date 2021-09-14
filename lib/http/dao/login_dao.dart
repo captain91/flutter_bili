@@ -11,7 +11,8 @@ class LoginDao {
     return _send(userName, password);
   }
 
-  static registration(String userName, String password, imoocId, orderId) {
+  static registration(
+      String userName, String password, String imoocId, String orderId) {
     return _send(userName, password, imoocId: imoocId, orderId: orderId);
   }
 

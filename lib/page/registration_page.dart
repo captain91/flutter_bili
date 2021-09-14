@@ -9,6 +9,7 @@ import 'package:bili_app/widget/login_effect.dart';
 import 'package:bili_app/widget/login_input.dart';
 import 'package:flutter/material.dart';
 
+///注册页面
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
 
@@ -33,8 +34,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
       }),
       body: Container(
         child: ListView(
+          //自适应键盘弹起，防止遮挡
           children: [
-            LoginEffect(protect: protect),
+            LoginEffect(
+              protect: protect,
+            ),
             LoginInput(
               "用户名",
               "请输入用户名",
@@ -46,7 +50,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
             LoginInput(
               "密码",
               "请输入密码",
-              lineStretch: true,
               obscureText: true,
               onChanged: (text) {
                 password = text;
@@ -93,9 +96,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
               },
             ),
             Padding(
-                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: LoginButton('注册',
-                    enable: loginEnable, onPressed: checkParams)),
+              padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: LoginButton('注册',
+                  enable: loginEnable, onPressed: checkParams),
+            )
           ],
         ),
       ),
@@ -124,7 +128,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           await LoginDao.registration(userName!, password!, imoocId!, orderId!);
       print(result);
       if (result['code'] == 0) {
-        print("注册成功");
+        print('注册成功');
         showToast('注册成功');
         HiNavigator.getInstance().onJumpTo(RouteStatus.login);
       } else {
@@ -143,12 +147,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void checkParams() {
     String? tips;
     if (password != rePassword) {
-      tips = "两次密码不一致";
+      tips = '两次密码不一致';
     } else if (orderId?.length != 4) {
-      tips = "请输入订单号的后4位";
+      tips = "请输入订单号的后四位";
     }
     if (tips != null) {
-      showWarnToast(tips);
+      print(tips);
       return;
     }
     send();

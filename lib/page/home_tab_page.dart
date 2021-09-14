@@ -37,7 +37,7 @@ class _HomeTabPageState extends State<HomeTabPage>
       print('dis:$dis');
       //当距离底部不足300时加载更多
       if (dis < 300 && !_loading) {
-        print('--------_loadData----');
+        print('------_loadData---');
         _loadData(loadMore: true);
       }
     });
@@ -46,8 +46,8 @@ class _HomeTabPageState extends State<HomeTabPage>
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -57,39 +57,37 @@ class _HomeTabPageState extends State<HomeTabPage>
       onRefresh: _loadData,
       color: primary,
       child: MediaQuery.removePadding(
-        removeTop: true,
-        context: context,
-        child: StaggeredGridView.countBuilder(
-            controller: _scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-            crossAxisCount: 2,
-            itemCount: videoList.length,
-            itemBuilder: (BuildContext context, int index) {
-              //有banner时第一个item位置显示banner
-              if (widget.bannerList != null && index == 0) {
-                return Padding(
-                    padding: EdgeInsets.only(bottom: 8), child: _banner());
-              } else {
-                return VideoCard(videoMo: videoList[index]);
-              }
-            },
-            staggeredTileBuilder: (int index) {
-              if (widget.bannerList != null && index == 0) {
-                return StaggeredTile.fit(2);
-              } else {
-                return StaggeredTile.fit(1);
-              }
-            }),
-      ),
+          removeTop: true,
+          context: context,
+          child: StaggeredGridView.countBuilder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+              crossAxisCount: 2,
+              itemCount: videoList.length,
+              itemBuilder: (BuildContext context, int index) {
+                //有banner时第一个item位置显示banner
+                if (widget.bannerList != null && index == 0) {
+                  return Padding(
+                      padding: EdgeInsets.only(bottom: 8), child: _banner());
+                } else {
+                  return VideoCard(videoMo: videoList[index]);
+                }
+              },
+              staggeredTileBuilder: (int index) {
+                if (widget.bannerList != null && index == 0) {
+                  return StaggeredTile.fit(2);
+                } else {
+                  return StaggeredTile.fit(1);
+                }
+              })),
     );
   }
 
   _banner() {
     return Padding(
-      padding: EdgeInsets.only(right: 5, left: 5),
-      child: HiBanner(widget.bannerList!),
-    );
+        padding: EdgeInsets.only(left: 5, right: 5),
+        child: HiBanner(widget.bannerList!));
   }
 
   Future<void> _loadData({loadMore = false}) async {

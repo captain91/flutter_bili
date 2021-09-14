@@ -2,22 +2,25 @@ import 'package:bili_app/http/dao/login_dao.dart';
 
 enum HttpMethod { GET, POST, DELETE }
 
-/// 基础请求
+///基础请求
 abstract class BaseRequest {
-  //查询参数 https://api.xxxx/test?requstPrams=11
-  //path 请求 https://api.xxxxx/test/11
+  // curl -X GET "http://api.devio.org/uapi/test/test?requestPrams=11" -H "accept: */*"
+  // curl -X GET "https://api.devio.org/uapi/test/test/1
   var pathParams;
   var useHttps = true;
+
   String authority() {
     return "api.devio.org";
   }
 
   HttpMethod httpMethod();
+
   String path();
+
   String url() {
     Uri uri;
     var pathStr = path();
-    //拼接 path 参数
+    //拼接path参数
     if (pathParams != null) {
       if (path().endsWith("/")) {
         pathStr = "${path()}$pathParams";
@@ -32,7 +35,7 @@ abstract class BaseRequest {
       uri = Uri.http(authority(), pathStr, params);
     }
     if (needLogin()) {
-      //需要登录的接口携带登录令牌
+      //给需要登录的接口携带登录令牌
       addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
     }
     print('url:${uri.toString()}');

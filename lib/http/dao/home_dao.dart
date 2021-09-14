@@ -3,6 +3,7 @@ import 'package:bili_app/http/request/home_request.dart';
 import 'package:bili_app/model/home_mo.dart';
 
 class HomeDao {
+  //https://api.devio.org/uapi/fa/home/推荐?pageIndex=1&pageSize=10
   static get(String categoryName, {int pageIndex = 1, int pageSize = 1}) async {
     HomeRequest request = HomeRequest();
     request.pathParams = categoryName;

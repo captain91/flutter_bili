@@ -1,10 +1,7 @@
-import 'dart:io';
-
+import 'package:bili_app/util/view_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-enum StatusStyle { LIGHT_CONTENT, DART_CONTENT }
-
+///可自定义样式的沉浸式导航栏
 class NavigationBar extends StatelessWidget {
   final StatusStyle statusStyle;
   final Color color;
@@ -13,7 +10,7 @@ class NavigationBar extends StatelessWidget {
 
   const NavigationBar(
       {Key? key,
-      this.statusStyle = StatusStyle.DART_CONTENT,
+      this.statusStyle = StatusStyle.DARK_CONTENT,
       this.color = Colors.white,
       this.height = 46,
       required this.child})
@@ -22,6 +19,7 @@ class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _statusBarInit();
+    //状态栏高度
     var top = MediaQuery.of(context).padding.top;
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -33,20 +31,7 @@ class NavigationBar extends StatelessWidget {
   }
 
   void _statusBarInit() {
-    var brightness;
-    if (Platform.isIOS) {
-      brightness = statusStyle == StatusStyle.LIGHT_CONTENT
-          ? Brightness.dark
-          : Brightness.light;
-    } else {
-      brightness = statusStyle == StatusStyle.LIGHT_CONTENT
-          ? Brightness.light
-          : Brightness.dark;
-    }
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: brightness,
-      statusBarIconBrightness: brightness,
-    ));
+    //沉浸式状态栏
+    changeStatusBar(color: color, statusStyle: statusStyle);
   }
 }

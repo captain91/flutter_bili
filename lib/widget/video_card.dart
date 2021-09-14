@@ -4,32 +4,34 @@ import 'package:bili_app/util/format_util.dart';
 import 'package:bili_app/util/view_util.dart';
 import 'package:flutter/material.dart';
 
+///视频卡片
 class VideoCard extends StatelessWidget {
   final VideoModel videoMo;
+
   const VideoCard({Key? key, required this.videoMo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print(videoMo.url);
-        HiNavigator.getInstance()
-            .onJumpTo(RouteStatus.detail, args: {"videoMo": videoMo});
-      },
-      child: SizedBox(
-        height: 200,
-        child: Card(
-          margin: EdgeInsets.only(left: 4, right: 4, bottom: 8),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[_itemImage(context), _infoText()],
+        onTap: () {
+          print(videoMo.url);
+          HiNavigator.getInstance()
+              .onJumpTo(RouteStatus.detail, args: {"videoMo": videoMo});
+        },
+        child: SizedBox(
+          height: 200,
+          child: Card(
+            //取消卡片默认边距
+            margin: EdgeInsets.only(left: 4, right: 4, bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [_itemImage(context), _infoText()],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   _itemImage(BuildContext context) {
@@ -82,24 +84,23 @@ class VideoCard extends StatelessWidget {
 
   _infoText() {
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              videoMo.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12, color: Colors.black87),
-            ),
-            //作者
-            _owner()
-          ],
-        ),
+        child: Container(
+      padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            videoMo.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 12, color: Colors.black87),
+          ),
+          //作者
+          _owner()
+        ],
       ),
-    );
+    ));
   }
 
   _owner() {
@@ -110,9 +111,8 @@ class VideoCard extends StatelessWidget {
         Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: cachedImage(owner.face, height: 24, width: 24),
-            ),
+                borderRadius: BorderRadius.circular(12),
+                child: cachedImage(owner.face, height: 24, width: 24)),
             Padding(
               padding: EdgeInsets.only(left: 8),
               child: Text(

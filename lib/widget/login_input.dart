@@ -1,7 +1,7 @@
 import 'package:bili_app/util/color.dart';
 import 'package:flutter/material.dart';
 
-///登录输入框，自定义Widget
+///登录输入框，自定义widget
 class LoginInput extends StatefulWidget {
   final String title;
   final String hint;
@@ -10,6 +10,7 @@ class LoginInput extends StatefulWidget {
   final bool lineStretch;
   final bool obscureText;
   final TextInputType? keyboardType;
+
   const LoginInput(this.title, this.hint,
       {Key? key,
       this.onChanged,
@@ -25,12 +26,13 @@ class LoginInput extends StatefulWidget {
 
 class _LoginInputState extends State<LoginInput> {
   final _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    //是否获取光标监听
+    //是否获取光标的监听
     _focusNode.addListener(() {
-      print("Has focus:${_focusNode.hasFocus}");
+      print("Has focus: ${_focusNode.hasFocus}");
       if (widget.focusChanged != null) {
         widget.focusChanged!(_focusNode.hasFocus);
       }
@@ -43,6 +45,7 @@ class _LoginInputState extends State<LoginInput> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -80,7 +83,7 @@ class _LoginInputState extends State<LoginInput> {
       autofocus: !widget.obscureText,
       cursorColor: primary,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-      //输入框样式
+      //输入框的样式
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(left: 20, right: 20),
           border: InputBorder.none,

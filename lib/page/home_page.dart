@@ -6,6 +6,7 @@ import 'package:bili_app/navigator/hi_navigator.dart';
 import 'package:bili_app/page/home_tab_page.dart';
 import 'package:bili_app/util/color.dart';
 import 'package:bili_app/util/toast.dart';
+import 'package:bili_app/util/view_util.dart';
 import 'package:bili_app/widget/loading_container.dart';
 import 'package:bili_app/widget/navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends HiState<HomePage>
     _controller = TabController(length: categoryList.length, vsync: this);
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
       print('home:current:${current.page}');
-      print('home:${pre.page}');
+      print('home:pre:${pre.page}');
       if (widget == current.page || current.page is HomePage) {
         print('打开了首页:onResume');
       } else if (widget == pre?.page || pre?.page is HomePage) {
@@ -60,10 +61,11 @@ class _HomePageState extends HiState<HomePage>
         child: Column(
           children: [
             NavigationBar(
-                child: _appBar(),
-                height: 50,
-                color: Colors.white,
-                statusStyle: StatusStyle.DART_CONTENT),
+              height: 50,
+              child: _appBar(),
+              color: Colors.white,
+              statusStyle: StatusStyle.DARK_CONTENT,
+            ),
             Container(
               color: Colors.white,
               child: _tabBar(),
@@ -85,6 +87,7 @@ class _HomePageState extends HiState<HomePage>
   @override
   bool get wantKeepAlive => true;
 
+  ///自定义顶部tab
   _tabBar() {
     return TabBar(
         controller: _controller,
@@ -100,7 +103,7 @@ class _HomePageState extends HiState<HomePage>
             padding: EdgeInsets.only(left: 5, right: 5),
             child: Text(
               tab.name,
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 16),
             ),
           ));
         }).toList());
@@ -108,9 +111,10 @@ class _HomePageState extends HiState<HomePage>
 
   void loadData() async {
     try {
-      HomeMo result = await HomeDao.get("推荐");
-      print("loadData:$result");
+      HomeMo result = await HomeDao.get('推荐');
+      print('loadData():$result');
       if (result.categoryList != null) {
+        //tab长度变化后需要重新创建TabController
         _controller = TabController(
             length: result.categoryList?.length ?? 0, vsync: this);
       }
@@ -120,17 +124,17 @@ class _HomePageState extends HiState<HomePage>
         _isLoading = false;
       });
     } on NeedAuth catch (e) {
+      print(e);
+      showWarnToast(e.message);
       setState(() {
         _isLoading = false;
       });
-      print(e);
-      showWarnToast(e.message);
     } on HiNetError catch (e) {
+      print(e);
+      showWarnToast(e.message);
       setState(() {
         _isLoading = false;
       });
-      print(e);
-      showWarnToast(e.message);
     }
   }
 

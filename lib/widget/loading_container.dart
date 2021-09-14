@@ -8,10 +8,11 @@ class LoadingContainer extends StatelessWidget {
 
   ///加载动画是否覆盖在原有界面上
   final bool cover;
+
   const LoadingContainer(
       {Key? key,
-      required this.child,
       this.isLoading = false,
+      required this.child,
       this.cover = false})
       : super(key: key);
 
@@ -26,7 +27,7 @@ class LoadingContainer extends StatelessWidget {
     }
   }
 
-//lottie动画
+  //lottie动画
   Widget get _loadingView {
     return Center(child: Lottie.asset('assets/loading.json'));
   }
