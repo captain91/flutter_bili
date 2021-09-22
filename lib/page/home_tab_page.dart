@@ -87,7 +87,16 @@ class _HomeTabPageState extends State<HomeTabPage>
   _banner() {
     return Padding(
         padding: EdgeInsets.only(left: 5, right: 5),
-        child: HiBanner(widget.bannerList!));
+        child: HiBanner(removeFirstItem(widget.bannerList!)));
+  }
+
+  List<BannerMo> removeFirstItem(List tagList) {
+    List<BannerMo> temp = [];
+    int i = 0;
+    for (var item in tagList) {
+      i != 0 ? temp.add(item) : i++;
+    }
+    return temp;
   }
 
   Future<void> _loadData({loadMore = false}) async {
