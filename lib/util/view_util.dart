@@ -66,7 +66,7 @@ void changeStatusBar(
   ));
 }
 
-//带文字的小图标
+///带文字的小图标
 smallIconText(IconData iconData, var text) {
   var style = TextStyle(fontSize: 12, color: Colors.grey);
   if (text is int) {
@@ -97,4 +97,16 @@ borderLine(BuildContext context, {bottom: true, top: false}) {
 ///hiSpace
 SizedBox hiSpace({double height: 1, double width: 1}) {
   return SizedBox(height: height, width: width);
+}
+
+///底部阴影
+BoxDecoration? bottomBoxShadow() {
+  return BoxDecoration(color: Colors.white, boxShadow: [
+    BoxShadow(
+        color: Colors.grey[100]!,
+        offset: Offset(0, 5), //xy轴偏移
+        blurRadius: 5.0, //阴影模糊程度
+        spreadRadius: 1 //阴影扩散程度
+        )
+  ]);
 }
