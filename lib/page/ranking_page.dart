@@ -28,29 +28,32 @@ class _RankingPageState extends State<RankingPage>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: LoadingContainer(
       child: Column(
         children: [
-          NavigationBar(
-            height: 50,
-            child: Container(
-              alignment: Alignment.center,
-              child: _tabBar(),
-            ),
-            color: Colors.white,
-            statusStyle: StatusStyle.DARK_CONTENT,
-          ),
-          Flexible(
-              child: TabBarView(
-                  controller: _controller,
-                  children: TABS.map((tab) {
-                    return RankingTabPage(sortKey: tab['key'].toString());
-                  }).toList())),
+          _buildNavigationBar(),
+          _buildTabView(),
         ],
       ),
     ));
+  }
+
+  _buildNavigationBar() {
+    return NavigationBar(
+      child: Container(
+        alignment: Alignment.center,
+        child: _tabBar(),
+        decoration: bottomBoxShadow(),
+      ),
+    );
   }
 
   _tabBar() {
@@ -65,5 +68,14 @@ class _RankingPageState extends State<RankingPage>
       unselectedLabelColor: Colors.black54,
       controller: _controller,
     );
+  }
+
+  _buildTabView() {
+    return Flexible(
+        child: TabBarView(
+            controller: _controller,
+            children: TABS.map((tab) {
+              return RankingTabPage(sort: tab['key'].toString());
+            }).toList()));
   }
 }
