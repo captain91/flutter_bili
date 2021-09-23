@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:bili_app/barrage/hi_barrage.dart';
+import 'package:bili_app/barrage/hi_socket.dart';
 import 'package:bili_app/http/core/hi_error.dart';
 import 'package:bili_app/http/dao/favorite_dao.dart';
 import 'package:bili_app/http/dao/like_dao.dart';
@@ -34,6 +36,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoDetailMo? videoDetailMo;
   VideoModel? videoModel;
   List<VideoModel> videoList = [];
+  var _barrageKey = GlobalKey<HiBarrageState>();
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
     _controller = TabController(length: tabs.length, vsync: this);
     videoModel = widget.videoModel;
+
     _loadDetail();
   }
 
@@ -91,6 +95,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       model.url!,
       cover: model.cover,
       overlayUI: videoAppBar(),
+      barrageUI: HiBarrage(vid: model.vid, key: _barrageKey, autoPlay: true),
     );
   }
 
