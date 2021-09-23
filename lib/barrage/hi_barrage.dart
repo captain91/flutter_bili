@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bili_app/barrage/barrage_item.dart';
+import 'package:bili_app/barrage/barrage_view_util.dart';
 import 'package:bili_app/barrage/hi_socket.dart';
 import 'package:bili_app/barrage/ibarrage.dart';
 import 'package:bili_app/model/barrage_model.dart';
@@ -110,7 +111,22 @@ class HiBarrageState extends State<HiBarrage> implements IBarrage {
     });
   }
 
-  void addBarrage(BarrageModel temp) {}
+//添加弹幕
+  void addBarrage(BarrageModel model) {
+    double perRowHeight = 30;
+    var line = _barrageIndex % widget.lineCount;
+    _barrageIndex++;
+    var top = line * perRowHeight + widget.top;
+    //为每条弹幕生成一个id
+    String id = '${_random.nextInt(10000)}:${model.content}';
+    var item = BarrageItem(
+        id: id,
+        top: top,
+        child: BarrageViewUtil.barrageView(model),
+        onComplete: _onComplete);
+    _barrageItemList.add(item);
+    setState(() {});
+  }
 
   @override
   void pause() {
@@ -128,5 +144,11 @@ class HiBarrageState extends State<HiBarrage> implements IBarrage {
     _hiSocket.send(message);
     _handleMessage(
         [BarrageModel(content: message, vid: '-1', priority: 1, type: 1)]);
+  }
+
+  void _onComplete(id) {
+    print("Done:%id");
+    //弹幕播放完毕将其从弹幕widget集合中剔除
+    _barrageItemList.removeWhere((element) => element.id == id);
   }
 }
