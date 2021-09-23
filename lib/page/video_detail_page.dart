@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:bili_app/http/core/hi_error.dart';
+import 'package:bili_app/http/dao/favorite_dao.dart';
+import 'package:bili_app/http/dao/like_dao.dart';
 import 'package:bili_app/http/dao/video_detail_dao.dart';
 import 'package:bili_app/model/video_detail_mo.dart';
 import 'package:bili_app/model/video_model.dart';
@@ -11,6 +13,7 @@ import 'package:bili_app/widget/expandable_content.dart';
 import 'package:bili_app/widget/hi_tab.dart';
 import 'package:bili_app/widget/navigation_bar.dart';
 import 'package:bili_app/widget/video_header.dart';
+import 'package:bili_app/widget/video_large_card.dart';
 import 'package:bili_app/widget/video_toolbar.dart';
 import 'package:bili_app/widget/video_view.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +33,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   List tabs = ["简介", "评论299"];
   VideoDetailMo? videoDetailMo;
   VideoModel? videoModel;
+  List<VideoModel> videoList = [];
 
   @override
   void initState() {
@@ -57,6 +61,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
           child: videoModel?.url != null
               ? Column(
                   children: [
+                    //iOS 黑色状态栏
                     NavigationBar(
                       color: Colors.black,
                       statusStyle: StatusStyle.LIGHT_CONTENT,
@@ -90,6 +95,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   }
 
   _buildTabNavigation() {
+    //使用Material实现阴影效果
     return Material(
       elevation: 5,
       shadowColor: Colors.grey[100],
@@ -129,14 +135,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   _buildDetailList() {
     return ListView(
       padding: EdgeInsets.all(0),
-      children: [
-        ...buildContents(),
-        Container(
-          height: 200,
-          color: Colors.green,
-          child: Text('暂无内容'),
-        )
-      ],
+      children: [...buildContents(), ..._buildVideoList()],
     );
   }
 
@@ -160,7 +159,9 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       print(result);
       setState(() {
         videoDetailMo = result;
+        //更新旧数据
         videoModel = result.videoInfo;
+        videoList = result.videoList;
       });
     } on NeedAuth catch (e) {
       print(e);
@@ -170,9 +171,60 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     }
   }
 
-  void _doLike() {}
+  void _doLike() async {
+    try {
+      var result = await LikeDao.like(videoModel!.vid, !videoDetailMo!.isLike);
+      print(result);
+      videoDetailMo!.isLike = !videoDetailMo!.isLike;
+      if (videoDetailMo!.isLike) {
+        videoModel!.like += 1;
+      } else {
+        videoModel!.like -= 1;
+      }
+      setState(() {
+        videoDetailMo = videoDetailMo;
+        videoModel = videoModel;
+      });
+      showToast(result['msg']);
+    } on NeedAuth catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    }
+  }
 
   void _onUnLike() {}
 
-  void _onFavorite() {}
+  void _onFavorite() async {
+    try {
+      var result = await FavoriteDao.favorite(
+          videoModel!.vid, !videoDetailMo!.isFavorite);
+      print(result);
+      videoDetailMo!.isFavorite = !videoDetailMo!.isFavorite;
+      if (videoDetailMo!.isFavorite) {
+        videoModel!.favorite += 1;
+      } else {
+        videoModel!.favorite -= 1;
+      }
+      setState(() {
+        videoDetailMo = videoDetailMo;
+        videoModel = videoModel;
+      });
+      showToast(result['msg']);
+    } on NeedAuth catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    }
+  }
+
+  _buildVideoList() {
+    return videoList
+        .map((VideoModel mo) => VideoLargeCard(videoModel: mo))
+        .toList();
+  }
 }
