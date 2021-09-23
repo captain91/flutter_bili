@@ -31,9 +31,7 @@ class _HomeTabPageState
   }
 
   _banner(List<BannerMo> bannerList) {
-    return Padding(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: HiBanner(bannerList));
+    return HiBanner(bannerList, padding: EdgeInsets.only(left: 5, right: 5));
   }
 
   @override

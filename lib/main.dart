@@ -3,6 +3,7 @@ import 'package:bili_app/http/dao/login_dao.dart';
 import 'package:bili_app/model/video_model.dart';
 import 'package:bili_app/navigator/bottom_navigator.dart';
 import 'package:bili_app/page/login_page.dart';
+import 'package:bili_app/page/notice_page.dart';
 import 'package:bili_app/page/registration_page.dart';
 import 'package:bili_app/page/video_detail_page.dart';
 import 'package:bili_app/util/color.dart';
@@ -83,6 +84,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRouthPath>
       page = pageWrap(RegistrationPage());
     } else if (routeStatus == RouteStatus.login) {
       page = pageWrap(LoginPage());
+    } else if (routeStatus == RouteStatus.notice) {
+      page = pageWrap(NoticePage());
     }
     tempPages = [...tempPages, page];
     //通知路由发生变化

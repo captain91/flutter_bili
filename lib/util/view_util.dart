@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 enum StatusStyle { LIGHT_CONTENT, DARK_CONTENT }
 
@@ -109,4 +110,12 @@ BoxDecoration? bottomBoxShadow() {
         spreadRadius: 1 //阴影扩散程度
         )
   ]);
+}
+
+///日期格式化，2022-06-11 20:06:43 -> 06-11
+String dateMonthAndDay(String dateStr) {
+  DateTime now = DateTime.now();
+  DateFormat formatter = DateFormat('MM-dd');
+  String formatted = formatter.format(now);
+  return formatted;
 }
